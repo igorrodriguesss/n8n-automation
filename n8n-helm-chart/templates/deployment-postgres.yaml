@@ -18,7 +18,7 @@ spec:
         fsGroup: 999
       containers:
         - name: postgres
-          image: {{ .Values.postgres.image }}:{{ .Values.postgres.tag }}
+          image: {{ .Values.postgres.image }}
           ports:
             - containerPort: {{ .Values.postgres.port }}
           env:

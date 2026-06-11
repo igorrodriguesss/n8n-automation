@@ -18,7 +18,7 @@ spec:
           command: ['sh', '-c', 'until nc -z postgres 5432; do echo waiting; sleep 2; done']
       containers:
         - name: n8n
-          image: {{ .Values.n8n.image }}:{{ .Values.n8n.tag }}
+          image: {{ .Values.n8n.image }}
           ports:
             - containerPort: {{ .Values.n8n.port }}
           env:
