@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: n8n
+  template:
+    metadata:
+      labels:
+        app: n8n
+    spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox
+          command: ['sh', '-c', 'until nc -z postgres 5432; do echo waiting; sleep 2; done']
+      containers:
+        - name: n8n
+          image: {{ .Values.n8n.image }}:{{ .Values.n8n.tag }}
+          ports:
+            - containerPort: {{ .Values.n8n.port }}
+          env:
+            - name: DB_TYPE
+              value: postgresdb
+            - name: DB_POSTGRESDB_HOST
+              value: {{ .Values.postgres.host }}
+            - name: DB_POSTGRESDB_PORT
+              value: "{{ .Values.postgres.port }}"
+            - name: DB_POSTGRESDB_DATABASE
+              value: {{ .Values.postgres.database }}
+            - name: DB_POSTGRESDB_USER
+              value: {{ .Values.postgres.username }}
+            - name: DB_POSTGRESDB_PASSWORD
+              value: {{ .Values.postgres.password }}
+          volumeMounts:
+            - name: n8n-data
+              mountPath: {{ .Values.n8n.mountPath }}
+      volumes:
+        - name: n8n-data
+          persistentVolumeClaim:
+            claimName: pvc-n8n
+

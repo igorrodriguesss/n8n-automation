@@ -1,0 +1,21 @@
+n8n:
+  image: n8nio/n8n
+  tag: latest
+  port: 5678
+  mountPath: /home/irodrigues/.n8n
+  volumePath: /mnt/data/n8n
+
+postgres:
+  image: postgres
+  tag: latest
+  port: 5432
+  database: n8ndb
+  host: postgres
+  username: n8n
+  password: n8npass
+  mountPath: /var/lib/postgresql
+  volumePath: /mnt/data/postgres
+
+service:
+  type: LoadBalancer
+  port: 5678
