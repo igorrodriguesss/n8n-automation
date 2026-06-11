@@ -15,7 +15,7 @@ jobs:
         uses: azure/setup-helm@v3
         with:
           version: v3.12.0
-ARGOCD_USERNAME      - name: Helm lint
+      - name: Helm lint
         run: helm lint ./n8n-helm-chart
 
   sync:
@@ -37,5 +37,3 @@ ARGOCD_USERNAME      - name: Helm lint
           ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
       - name: Sync Application
         run: argocd app sync n8n
-name: CI/CD n8n Helm Chart
-
